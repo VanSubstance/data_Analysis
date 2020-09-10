@@ -81,10 +81,14 @@ from sklearn import datasets
 boston = datasets.load_boston()
 X = boston.data
 y = boston.target
+dfX = pd.DataFrame(boston.data, columns=boston.feature_names)
+dfy = pd.DataFrame(boston.target, columns=["MEDV"])
+df = pd.concat([dfX, dfy], axis=1)
+scatter_matrix(df, figsize = (10, 8))
 
 X = sm.add_constant(X)
 
-model = sm.OLS(y, X)
+model = sm.OLS(dfy, dfX)
 result = model.fit()
 
 result.summary()

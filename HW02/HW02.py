@@ -58,14 +58,42 @@ house['date'] = pd.to_numeric(house['date'])
 scatter_matrix(house[['date', 'price']], figsize = (12, 8))
 
 house[['date', 'price']].corr()
+
+# 5. Try to transform sqft_lot, sqft_lot15 into a shape that has straight correlation with y(price)
+# Failed
+
+import math
+
+max1 = house['sqft_lot'].max()
+max2 = house['sqft_lot15'].max()
+for ind in range(len(house)):
+    newData = house['sqft_lot'][ind]
+    newData2 = house['sqft_lot15'][ind]
+    house['sqft_lot'][ind] = math.sqrt(max1 - newData)
+    house['sqft_lot15'][ind] = math.sqrt(max2 - newData2)
+
+plt.scatter(house['price'], house['sqft_lot'])
+
+house.groupby('price')['sqft_lot'].count().plot()
+
+scatter_matrix(house[['sqft_lot', 'sqft_lot15', 'price']], figsize = (12, 8))
+scatter_matrix(house[['sqft_living', 'sqft_living15', 'price']], figsize = (12, 8))
+
 #%% Linear regression
 
 import statsmodels.api as sm
 from sklearn import datasets
 
 X = house[['bathrooms', 'sqft_living', 'grade', 'sqft_above', 
-           'sqft_basement', 'sqft_living15', 'sqft_lot15', 'sqft_lot']]
+           'sqft_basement', 'sqft_living15']]
 
 y = house['price']
+
+X = sm.add_constant(X)
+
+model = sm.OLS(y, X)
+result = model.fit()
+
+result.summary()
 
 
