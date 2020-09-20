@@ -37,8 +37,8 @@ f_oneway(*groups)
 
 catvar = ['rank', 'discipline', 'sex']
 for c in catvar:
-    dummy = pd.get_dummies(salary[c], prefix = c, drop_first = True)
-    salary = pd.concat((salary, dummy), axis = 1)
+    dummy1 = pd.get_dummies(salary[c], prefix = c, drop_first = True)
+    salary = pd.concat((salary, dummy1), axis = 1)
     
 X = salary.drop(catvar + ['salary'], axis = 1)
 y = salary['salary']
