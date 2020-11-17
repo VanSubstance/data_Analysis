@@ -13,24 +13,30 @@ for player in dataBC['name'].unique():
     part = []
     parts = []
     for seq in range(len(indexes) - 1):
+        # 마지막 칸
         if seq == len(indexes) - 2:
             part.append(indexes[seq + 1])
             parts.append(part)
             part = []
+        # ??
         if indexes[seq] == indexes[seq + 1]:
             part.append(indexes[seq])
+        # 나머지 칸들
         else:
             parts.append(part)
             part = []
             part.append(indexes[seq])
+    # 최저점 찾기
     for part in parts:
         for seq in part:
             if not (dataBC[dataBC['name'] == player]['mv'][seq] == "-"):
                 limit = dataBC[dataBC['name'] == player]['mv'][seq]
+    
     if not limit:
         dropper.append(player)
         index = dataBC[dataBC['name'] == player].index
         dataBC = dataBC.drop(index)
+    # 값 채우기
     else:
         dataBC.loc[dataBC['name'] == player, 'mv'] = dataBC[dataBC['name'] == player]['mv'].str.replace("-", limit)
         print(player + " done!")

@@ -11,6 +11,7 @@ data_c = pd.read_csv('phase3\\' + 'leagues_c_final.csv')
     
 newOne = pd.Series(list(range(data_c.shape[0])), name = "transfer_no")
 result = pd.concat([data_c, newOne], axis = 1)
+dropper = []
 
 for player in data_c['name'].unique():
     indexes = data_c[data_c['name'] == player].index
@@ -27,12 +28,18 @@ for player in data_c['name'].unique():
             part.append(indexes[seq])
             parts.append(part)
             part = []
-    
+            
+    siz = 1
     for par in parts:
-        siz = len(par)
-        for seq in par:
-            data_c.loc[seq, 'transfer_no'] = siz
-            siz -= 1
+        siz = 1
+        for seq in range(len(par) - 1, -1, -1):
+            data_c.loc[par[seq], 'transfer_no'] = siz
+            if seq != 0:
+                data_c.loc[par[seq], 'mv'] = data_c.loc[par[seq - 1], 'mv']
+            elif seq == 0:
+                dropper.append(par[seq])
+            siz += 1
     print(player, " |\n")
-
-data_c.to_csv('phase3\\' + 'leagues_c_with_transfer_no.csv')
+    
+data_c = data_c.drop(dropper, axis = 0)
+data_c.to_csv('phase3\\' + 'leagues_c_with_transfer_no.csv', index = False)
