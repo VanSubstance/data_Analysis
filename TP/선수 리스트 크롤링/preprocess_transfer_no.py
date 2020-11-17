@@ -7,7 +7,6 @@ Created on Wed Nov 11 01:09:55 2020
 
 import pandas as pd
 
-data_d = pd.read_csv('phase3\\' + 'leagues_d_final.csv')
 data_c = pd.read_csv('phase3\\' + 'leagues_c_final.csv')
     
 newOne = pd.Series(list(range(data_c.shape[0])), name = "transfer_no")

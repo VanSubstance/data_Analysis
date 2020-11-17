@@ -53,12 +53,12 @@ def mv(x):
 dataBC['mv'] = dataBC['mv'].str.replace("£", "")
 dataBC['mv'] = dataBC['mv'].apply(mv)
 
-
+#%% Changing year into digit 
 def year_digit(x):
     return x[2:4]
 dataBC['date'] = dataBC['date'].apply(year_digit)
 
 #%% F table from BC
 dataF = dataBC[['name', 'foot', 'height', 'position']]
-dataBC.to_csv("phase3\\" + "leagues_c" + ".csv", index = True, columns = ["name", "age", "date", "mv"])
+dataBC.to_csv("phase3\\" + "leagues_c" + ".csv", index = True, columns = ["name", "age", "date", "mv", "potential"])
 dataF.to_csv("phase3\\" + "leagues_f" + ".csv", index = True)
